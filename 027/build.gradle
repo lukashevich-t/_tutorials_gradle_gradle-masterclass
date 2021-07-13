@@ -1,0 +1,31 @@
+defaultTasks 'doFinished'
+
+task doStartProcess {
+  doLast {
+    logger.quiet "$name: Starting process"
+  }
+}
+
+task doStep2 {
+   dependsOn doStartProcess
+  doLast {
+    logger.quiet "$name: performed"
+  }
+}
+
+task doSomethingInTheMiddle {
+  // dependsOn doStep2
+  doLast {
+    logger.quiet "$name: middle action"
+  }
+}
+
+task doFinished {
+  doLast {
+    logger.quiet "$name: done"
+  }
+}
+
+if(Math.random() < 0.5) {
+  doFinished.dependsOn doSomethingInTheMiddle, project.tasks.findAll{task -> task.name.startsWith('doStep2')}
+}

@@ -1,0 +1,40 @@
+logger.quiet """
+******************************************************************************
+Welcome to Gradle $gradle.gradleVersion - http://www.gradle.org
+Gradle home is set to: $gradle.gradleHomeDir
+Gradle user directory is set to: $gradle.gradleUserHomeDir
+
+Base directory: $projectDir
+Running script  ${relativePath(buildFile)}
+******************************************************************************
+"""
+
+logger.quiet "has gradleVersion property: ${project.gradle.hasProperty('gradleVersion')}"
+logger.quiet "x.y.z = ${project.'x.y.z'}"
+logger.quiet "oneWord = ${oneWord}"
+logger.quiet "project has oneWord property: ${project.hasProperty('oneWord')}"
+
+// Можно задавать properties в файле grade.properties в корне проекта или через командную строку:
+// gradle -Dprop=value
+if(hasProperty('SUFFIX')) {
+  logger.quiet "SUFFIX = $SUFFIX"
+} else {
+  logger.quiet "SUFFIX not specified"
+}
+
+project.ext.newProp = "newValue"
+logger.quiet "newProp = $this.ext.newProp"
+logger.quiet "newProp = $newProp"
+
+if(project.hasProperty("systemProp.mvn.deploy.username")) {
+  logger.quiet "systemProp.mvn.deploy.username = ${project.'systemProp.mvn.deploy.username'}"
+} else {
+  logger.quiet "systemProp.mvn.deploy.username not defined"
+}
+
+
+if(hasProperty("cmdline")) {
+  logger.quiet "cmdline = ${cmdline}"
+} else {
+  logger.quiet "cmdline not defined"
+}

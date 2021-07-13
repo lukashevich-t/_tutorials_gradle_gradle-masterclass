@@ -1,0 +1,42 @@
+// Closure resolution
+
+class Person {
+  String theName = "Tim"
+  int age = 30
+  Person() {}
+  Person(name) {
+    this.theName = name
+  }
+  Closure nameSayer = {
+    println theName
+  }
+
+  def executeInside(Closure c) {
+    c.delegate = this
+    c()
+  }
+
+  def execute(Closure c) {
+    c()
+  }
+}
+
+def tim = new Person()
+tim.nameSayer()
+tim.theName = "Timothy"
+tim.nameSayer()
+
+String theName = "Fred"
+Closure sayName = {
+  println theName
+}
+theName = "Jack"
+
+sayName()
+def alex = new Person("Alex")
+alex.executeInside(sayName)
+alex.executeInside {println theName}
+alex.executeInside { println age }
+alex.execute { println age }
+new Person("Annie").execute(sayName)
+

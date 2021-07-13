@@ -1,0 +1,5 @@
+logger.info "Info: Hello"
+
+apply {
+  println "Hello again"
+}

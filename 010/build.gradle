@@ -1,0 +1,22 @@
+class Person {
+  String name
+  Integer age
+
+  Person (name, age) {
+    this.name=name
+    this.age = age
+  }
+}
+
+def a = new Person("Tim", 41)
+println(a.name)
+println(a.getName())
+
+
+Map m = new HashMap()
+m.put("a", 1)
+m.put("b", 2)
+println(m)
+m."c c" = 12
+println(m."c c")
+println(m.cc)

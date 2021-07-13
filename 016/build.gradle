@@ -1,0 +1,24 @@
+println """==========================================
+Configuration phase: processing build.gradle.
+=========================================="""
+
+logger.quiet "Hello. timestamp = ${gradle.timestamp()}"
+logger.quiet "Timestamp again: ${project.gradle.timestamp()}"
+logger.quiet """
+========================================
+Configuration phase: You can place *.gradle files into \$GRADLE_USER_HOME/.gradle/init.d folder (by default GRADLE_USER_HOME = HOME), and they will be executed during the initialization phase (in the alphabetical order)
+========================================"""
+
+// example of D:\caches\gradle\init.d\init1.gradle:
+// println """
+// ==========================================
+// Initialization phase: processing init1.gradle.
+// =========================================="""
+
+// gradle.ext.timestamp = { return System.currentTimeMillis(); }
+// logger.quiet "timestamp = ${gradle.timestamp()}"
+
+apply {
+  println "Configuration phase: Hello again"
+}
+logger.quiet "gradle root project ${gradle.getRootProject()}"

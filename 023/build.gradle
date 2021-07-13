@@ -1,0 +1,21 @@
+task "hi" {
+  description = "descr"
+  group = "other"
+  logger.quiet it.toString()
+  doLast("a11") {
+    logger.quiet "My name is $name"
+  }
+  doFirst {
+    logger.quiet "1"
+  }
+  doFirst {
+    logger.quiet "2"
+  }
+}
+
+hi.doLast {
+  logger.quiet "Hello"
+}.doLast {
+  logger.quiet "Bye!"
+}
+

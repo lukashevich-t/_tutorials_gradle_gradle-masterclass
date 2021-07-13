@@ -1,0 +1,17 @@
+def echoIt = { String p ->
+  println("inside closure: ${p}")
+  1
+}
+
+Closure echoIt2 = {
+  println it
+}
+
+Closure echoMany = { a, b, c ->
+  println "$a, $b, $c"
+}
+
+println echoIt("2ss")
+echoIt2 "aaa"
+echoIt2(11)
+echoMany(1, 2, 4)

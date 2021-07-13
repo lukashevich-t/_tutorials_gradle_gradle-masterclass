@@ -1,0 +1,28 @@
+defaultTasks 'doFinished'
+
+task doStartProcess {
+  doLast {
+    logger.quiet "$name: Starting process"
+  }
+}
+
+task doStep2 {
+   dependsOn doStartProcess
+  doLast {
+    logger.quiet "$name: performed"
+  }
+}
+
+task doSomethingInTheMiddle {
+  dependsOn doStep2
+  doLast {
+    logger.quiet "$name: middle action"
+  }
+}
+
+task doFinished(dependsOn: ["doSomethingInTheMiddle", "doStep2"]) {
+  doLast {
+    logger.quiet "$name: done"
+  }
+}
+

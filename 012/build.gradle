@@ -1,0 +1,16 @@
+def oneArgMethod(closure) {
+  closure() * 2
+}
+
+def twoArgMethod(factor, closure) {
+  closure() * factor
+}
+
+println oneArgMethod {
+  21
+}
+
+println twoArgMethod(3) { 21 }
+println (twoArgMethod 3, { 12 })
+
+[2,4,6].each {println it}
