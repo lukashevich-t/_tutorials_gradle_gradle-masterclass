@@ -1,0 +1,46 @@
+
+defaultTasks 'doFinished'
+
+task doStartProcess {
+  doLast {
+    logger.quiet "$name: Starting process"
+  }
+}
+
+task doStep2 {
+  doLast {
+    logger.quiet "$name: performed"
+  }
+}
+
+task doSomethingInTheMiddle(dependsOn: ['doStartProcess', tasks.findAll {t -> t.name.startsWith('doStep2')}]) {
+  doLast {
+    logger.quiet "$name: middle action"
+  }
+}
+
+task doFinished {
+  doLast {
+    logger.quiet "$name: done with version $version"
+  }
+}
+
+if(Math.random() < 0.5) {
+  doFinished.dependsOn doSomethingInTheMiddle, doStep2
+}
+
+logger.quiet "All tasks: $project.tasks"
+
+project.gradle.taskGraph.whenReady { taskGraph ->
+  logger.quiet "Tasks in taskGraph: ${taskGraph.allTasks}"
+  logger.quiet "taskGraph.hasTask('doStep2'): ${taskGraph.hasTask(':doStep2')}"
+  if(taskGraph.hasTask(doStep2)) {
+    project.version = "1.0"
+  } else {
+    project.version = "1.0-SNAPSHOT"
+  }
+}
+
+project.gradle.taskGraph.beforeTask { t ->
+  logger.quiet "before task $t.name"
+}
