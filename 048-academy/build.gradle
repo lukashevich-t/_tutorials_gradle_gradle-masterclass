@@ -12,8 +12,7 @@ buildscript {
 subprojects {
 	apply plugin: 'java-library'
 	apply plugin: "com.github.spotbugs"
-//    apply plugin: 'findbugs'
-//	apply plugin: 'pmd'
+	apply plugin: 'pmd'
 
 	description = 'Teaching Academy Root Project'
 	group = theGroup
@@ -46,42 +45,26 @@ subprojects {
 	    }
 	}
 
-/*
-	//PMD
-
 	pmd {
 		ignoreFailures = true
 		pmdTest.enabled= false
 		ruleSets = [
-			'java-basic',
-            'java-braces',
-            'java-clone',
-            'java-codesize',
-            'java-comments',
-            'java-controversial',
-            'java-coupling',
-            'java-design',
-            'java-empty',
-            'java-finalizers',
-            'java-imports',
-            'java-optimizations',
-            'java-strictexception',
-            'java-strings',
-            'java-typeresolution',
-            'java-unnecessary',
-            'java-unusedcode'
+			"category/java/errorprone.xml",
+			"category/java/multithreading.xml",
+			"category/java/bestpractices.xml",
+			"category/java/codestyle.xml",
+			"category/java/performance.xml",
+			"category/java/design.xml",
+			"category/java/documentation.xml"
 		]
 	}
 
 	tasks.withType(Pmd){
 	    reports{
-	        xml.enabled=true
+	        xml.enabled=false
 	        html.enabled=true
 	    }
 	}
-
-*/
-
 }
 
 project(':academy-audit') {

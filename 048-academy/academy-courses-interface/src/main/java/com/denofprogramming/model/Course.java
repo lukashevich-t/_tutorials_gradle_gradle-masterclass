@@ -1,9 +1,17 @@
 package com.denofprogramming.model;
 
+/**
+ * javadoc for PMD satisfaction :)
+ */
 public class Course extends DomainObject {
-
+    /**
+     * javadoc for PMD satisfaction :)
+     */
     private String name;
 
+    /**
+     * javadoc for PMD satisfaction :)
+     */
     public Course() {
         super();
     }
@@ -12,7 +20,7 @@ public class Course extends DomainObject {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 

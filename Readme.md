@@ -195,3 +195,76 @@ subprojects {
 ```
 
 Вызывать задачи `spotbugsMain`, `spotbugsTest` или `check`.
+### PMD
+[Статический анализатор кода](https://docs.gradle.org/current/userguide/pmd_plugin.html)
+
+Подключение к корневому или дочернему проекту:
+```gradle
+//subprojects {
+  apply plugin: 'pmd'
+//}
+```
+Конфигурация:
+```gradle
+// subprojects{
+pmd {
+    ignoreFailures = true
+    pmdTest.enabled= false
+		ruleSets = [
+			"category/java/errorprone.xml",
+			"category/java/multithreading.xml",
+			"category/java/bestpractices.xml",
+			"category/java/codestyle.xml",
+			"category/java/performance.xml",
+			"category/java/design.xml",
+			"category/java/documentation.xml"
+		]
+}
+
+tasks.withType(Pmd){
+    reports{
+        xml.enabled=true
+        html.enabled=true
+    }
+}
+//}
+```
+Задачи: `check`, `pmdTest`, `pmdMain`
+
+## Kotlin DSL
+
+Создать fat jar:
+```gradle
+val jar: Jar by tasks
+jar.apply {
+    baseName = "${project.name}-all"  
+    manifest {
+        attributes["Implementation-Title"] = "Jar File -all Example"
+        attributes["Implementation-Version"] = version
+        attributes["Main-Class"] = "com.denofprogramming.random.App"
+    }
+    from(configurations["runtimeClasspath"].map({file -> project.zipTree(file) }))
+}
+```
+
+## snippets
+### создать wrapper 1:
+`gradle wrapper --distribution-type=bin --gradle-version=7.5`
+
+### создать wrapper 2:
+```gradle
+// build.gradle
+wrapper {
+  gradleVersion='7.5'
+  distributionType='bin'
+}
+```
+`gradle wrapper`
+
+wrapper не проверяет, существует ли запрошенная версия gradle.
+
+### получить помощь:
+```
+gradle help
+gradle help --task wrapper
+```
