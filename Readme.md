@@ -1,3 +1,6 @@
+## Что это
+Тут мой прогресс прослушивания курса [The Gradle Masterclass](https://www.udemy.com/course/gradle-masterclass/). А также тут всякие прочие заметки и туториалы по gradle, например [этот](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE).
+
 ## API
 - [org.gradle.api.Script](https://docs.gradle.org/current/javadoc/org/gradle/api/Script.html)
 - [org.gradle.api.Project](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html)
@@ -267,4 +270,12 @@ wrapper не проверяет, существует ли запрошенна�
 ```
 gradle help
 gradle help --task wrapper
+```
+
+### Подключить все вложенные папки как подпроекты:
+```gradle
+// settings.gradle
+rootDir.listFiles().filter {it.isDirectory && !it.isHidden }.forEach {
+  include(it.name)
+}
 ```
