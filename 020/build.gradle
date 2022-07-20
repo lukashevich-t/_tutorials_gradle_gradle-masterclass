@@ -10,12 +10,12 @@ Running script  ${relativePath(buildFile)}
 """
 
 logger.quiet "has gradleVersion property: ${project.gradle.hasProperty('gradleVersion')}"
-logger.quiet "x.y.z = ${project.'x.y.z'}"
+logger.quiet "x.y.z = ${'x.y.z'}"
 logger.quiet "oneWord = ${oneWord}"
 logger.quiet "project has oneWord property: ${project.hasProperty('oneWord')}"
 
 // Можно задавать properties в файле grade.properties в корне проекта или через командную строку:
-// gradle -Dprop=value
+// gradle -Pprop=value
 if(hasProperty('SUFFIX')) {
   logger.quiet "SUFFIX = $SUFFIX"
 } else {
@@ -27,9 +27,9 @@ logger.quiet "newProp = $this.ext.newProp"
 logger.quiet "newProp = $newProp"
 
 if(project.hasProperty("systemProp.mvn.deploy.username")) {
-  logger.quiet "systemProp.mvn.deploy.username = ${project.'systemProp.mvn.deploy.username'}"
+  logger.quiet "project: systemProp.mvn.deploy.username = ${project.'systemProp.mvn.deploy.username'}"
 } else {
-  logger.quiet "systemProp.mvn.deploy.username not defined"
+  logger.quiet "project: systemProp.mvn.deploy.username not defined"
 }
 
 

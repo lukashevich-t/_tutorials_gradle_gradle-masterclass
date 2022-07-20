@@ -2,8 +2,8 @@ logger.quiet """==========================================
 Initialization phase: processing settings.gradle.
 =========================================="""
 logger.quiet "timestamp = ${gradle.timestamp()}"
-logger.quiet "gradle version $gradle.gradleVersion"
-logger.quiet "gradle UserHomeDir ${gradle.gradleUserHomeDir}"
-logger.quiet "gradle HomeDir $gradle.gradleHomeDir"
-logger.quiet "gradle parent ${gradle.parent}"
-logger.quiet "gradle Start Parameter ${gradle.getStartParameter()}"
+logger.quiet "settings.gradle: gradle version $gradle.gradleVersion"
+logger.quiet "settings.gradle: gradle UserHomeDir ${gradle.gradleUserHomeDir}"
+logger.quiet "settings.gradle: gradle HomeDir $gradle.gradleHomeDir"
+logger.quiet "settings.gradle: gradle parent ${gradle.parent}"
+logger.quiet "settings.gradle: gradle Start Parameter ${settings.gradle.getStartParameter()}"

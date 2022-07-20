@@ -1,5 +1,6 @@
 logger.quiet "build file ${buildFile}"
-String path = "d:\\temp"
+// String path = "d:\\temp"
+String path = "/usr/bin"
 // String relativePath = getRelativePath(path)
 logger.quiet "Relative path for $path is ${relativePath(path)}"
 

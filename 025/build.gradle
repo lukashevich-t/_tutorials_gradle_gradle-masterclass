@@ -20,7 +20,7 @@ task doSomethingInTheMiddle {
   }
 }
 
-task doFinished(dependsOn: ["doSomethingInTheMiddle", "doStep2"]) {
+task doFinished(dependsOn: ["doSomethingInTheMiddle", "doStep2"], overwrite: false) {
   doLast {
     logger.quiet "$name: done"
   }

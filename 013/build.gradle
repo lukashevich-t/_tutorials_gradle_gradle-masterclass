@@ -12,8 +12,10 @@ class Person {
   }
 
   def executeInside(Closure c) {
+    println "delegate before: ${c.delegate}"
     c.delegate = this
     c()
+    println "delegate after: ${c.delegate}"
   }
 
   def execute(Closure c) {
@@ -35,8 +37,18 @@ theName = "Jack"
 sayName()
 def alex = new Person("Alex")
 alex.executeInside(sayName)
+alex.executeInside(sayName)
 alex.executeInside {println theName}
+
+project.ext.someName = "Oleg"
+Closure saySomeName = { println someName }
+saySomeName()
+alex.executeInside(saySomeName)
+alex.execute(saySomeName)
+
+
 alex.executeInside { println age }
+// Integer age = 12
 alex.execute { println age }
 new Person("Annie").execute(sayName)
 

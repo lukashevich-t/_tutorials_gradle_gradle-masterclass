@@ -10,13 +10,21 @@ Configuration phase: You can place *.gradle files into \$GRADLE_USER_HOME/.gradl
 ========================================"""
 
 // example of D:\caches\gradle\init.d\init1.gradle:
-// println """
-// ==========================================
-// Initialization phase: processing init1.gradle.
-// =========================================="""
+/*
+println """
+==========================================
+Initialization phase: processing init1.gradle.
+=========================================="""
 
-// gradle.ext.timestamp = { return System.currentTimeMillis(); }
-// logger.quiet "timestamp = ${gradle.timestamp()}"
+gradle.ext.timestamp = { return System.currentTimeMillis(); }
+logger.quiet "timestamp = ${gradle.timestamp()}"
+logger.quiet "init1.gradle: this.parent: ${this.class.getDeclaredFields()}"
+logger.quiet "init1.gradle: this.__originalClassName: ${this.__originalClassName}"
+logger.quiet "init1.gradle: this.staticClassInfo: ${this.$staticClassInfo}"
+logger.quiet "init1.gradle: gradle version $gradle.gradleVersion"
+logger.quiet "init1.gradle: gradle UserHomeDir ${gradle.gradleUserHomeDir}"
+logger.quiet "init1.gradle: gradle HomeDir $gradleHomeDir"
+*/
 
 apply {
   println "Configuration phase: Hello again"

@@ -19,4 +19,5 @@ m.put("b", 2)
 println(m)
 m."c c" = 12
 println(m."c c")
+println(m.get("c c"))
 println(m.cc)

@@ -1,5 +1,7 @@
 logger.info "Info: Hello"
 
 apply {
-  println "Hello again"
+  println "apply: delegate.class is ${delegate.class}"
+  println "apply: this.class is ${this.class.canonicalName}"
+  println "apply: it.class is ${it.class}"
 }

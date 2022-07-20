@@ -1,9 +1,11 @@
 task "hi" {
-  description = "descr"
-  group = "other"
+  description = "Log the name of the task"
+  group = "Welcome"
   logger.quiet it.toString()
   doLast("a11") {
     logger.quiet "My name is $name"
+    logger.quiet it.class.toString()
+    logger.quiet this.class.toString()
   }
   doFirst {
     logger.quiet "1"
@@ -13,9 +15,18 @@ task "hi" {
   }
 }
 
-hi.doLast {
+task System.currentTimeMillis().toString()
+
+project.hi.doLast {
   logger.quiet "Hello"
 }.doLast {
   logger.quiet "Bye!"
 }
 
+tasks.each {
+  logger.quiet it.toString()
+}
+logger.quiet ''
+logger.quiet tasks['hi'].toString()
+logger.quiet project.tasks[7].description
+logger.quiet hi.toString()

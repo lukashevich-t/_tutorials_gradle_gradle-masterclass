@@ -33,6 +33,7 @@ logger.quiet "All tasks: $project.tasks"
 
 project.gradle.taskGraph.whenReady { taskGraph ->
   logger.quiet "Tasks in taskGraph: ${taskGraph.allTasks}"
+  logger.quiet "Tasks in taskGraph: ${gradle.taskGraph.allTasks}"
   logger.quiet "taskGraph.hasTask('doStep2'): ${taskGraph.hasTask(':doStep2')}"
   if(taskGraph.hasTask(doStep2)) {
     project.version = "1.0"
@@ -43,4 +44,8 @@ project.gradle.taskGraph.whenReady { taskGraph ->
 
 project.gradle.taskGraph.beforeTask { t ->
   logger.quiet "before task $t.name"
+}
+
+project.gradle.taskGraph.afterTask { t ->
+  logger.quiet "after task $t.name"
 }

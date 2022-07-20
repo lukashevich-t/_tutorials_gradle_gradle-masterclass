@@ -3,7 +3,13 @@ plugins {
 }
 
 repositories {
-  mavenCentral()
+  logger.info "repositories.it: ${it.class.toString()}"
+  logger.info "repositories.it.methods: $it.class.methods"
+  // logger.quiet "repositories.this: ${this.class.toString()}"
+  mavenCentral() {
+    logger.info "configuring mavenCentral: ${it.class.methods}"
+    logger.info it.url.toString()
+  }
 }
 
 dependencies {
