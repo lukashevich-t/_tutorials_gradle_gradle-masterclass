@@ -17,7 +17,7 @@ plugins {
 //}
 
 dependencies {
-//    implementation(project(":data-model"))
+    implementation(project(":data-model"))
     // Перенесено в convention plugin:
 //    implementation("org.apache.commons:commons-lang3:3.12.0")
 }

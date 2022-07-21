@@ -2,6 +2,7 @@
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 
 plugins {
+    id("my-java-base")
     id("java-library")
     id("org.jetbrains.kotlin.jvm")
 }

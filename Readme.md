@@ -1,5 +1,7 @@
 ## Что это
-Тут мой прогресс прослушивания курса [The Gradle Masterclass](https://www.udemy.com/course/gradle-masterclass/). А также тут всякие прочие заметки и туториалы по gradle, например [этот](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE).
+- мой прогресс прослушивания курса [The Gradle Masterclass](https://www.udemy.com/course/gradle-masterclass/). 
+- [туториал](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE) (папка *understanding-gradle*)
+- возможно, прочие заметки
 
 ## API
 - [org.gradle.api.Script](https://docs.gradle.org/current/javadoc/org/gradle/api/Script.html)
@@ -47,13 +49,41 @@
 - 027 (условные зависимости)
 - 029 ([Хуки жизненного цикла](https://docs.gradle.org/current/javadoc/org/gradle/api/execution/TaskExecutionGraph.html))
 
+Задачи делятся на lifecycle tasks и actionable tasks. Вторые присоединяются к первым. Например при подключении плагина `java` actionable task `compileJava` добавляется в зависимости к lifecycle task `build`.
+
 Задачи создаются на этапе конфигурации, а выполняются на этапе выполнения.
+
+создать задачу:
+```gradle
+// Groovy:
+task name1 {}
+task("name2") {}
+
+// Kotlin:
+tasks.register("name") {}
+```
 
 Доступ к задачам:
 ```
+// Groovy:
 logger.quiet hi.toString()
 logger.quiet tasks['hi'].toString()
 logger.quiet project.tasks[6].toString()
+// Kotlin:
+tasks.named("run")
+tasks.named<TaskReportTask>("tasks")
+tasks.build
+```
+
+Зависимости между задачами могут быть и между подпроектами и даже проектами в другом месте, например:
+```gradle
+// root build.gradle.kts
+tasks.register("qualityCheckAll") {
+    // Задача в другом проекте этой же сборки:
+    dependsOn(subprojects.map {":${it.name}:qualityCheck"})
+    // Задача в "соседней" сборке (см. includeBuild("..") в settings.gradle[.kts]):
+    dependsOn(gradle.includedBuilds.map {it.task(":checkAll")})
+}
 ```
 
 ## Java plugin https://docs.gradle.org/current/userguide/java_plugin.html
@@ -279,3 +309,11 @@ rootDir.listFiles().filter {it.isDirectory && !it.isHidden }.forEach {
   include(it.name)
 }
 ```
+
+## опции командной строки
+### Включить build cache
+`--build-cache`
+### изменить вывод результатов
+`--console=[plain|auto|rich|verbose`
+
+plain предназначен в основном для вывода в файл, но может быть полезен и так.
