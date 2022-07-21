@@ -1,6 +1,6 @@
 ## Что это
 - мой прогресс прослушивания курса [The Gradle Masterclass](https://www.udemy.com/course/gradle-masterclass/). 
-- [туториал](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE) (папка *understanding-gradle*)
+- [туториал](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE) ([github](https://github.com/jjohannes/understanding-gradle)) (папка *understanding-gradle*)
 - возможно, прочие заметки
 
 ## API
@@ -120,6 +120,88 @@ tasks.register<Zip>("packageApp") {
     from(configurations.runtimeClasspath) {
         into("libs")
     }
+}
+```
+
+Задача, вынесенная в отдельные классы:
+```kotlin
+// PackageAppExtension.kt
+package myproject.tasks
+
+import org.gradle.api.provider.Property
+
+interface PackageAppExtension { val mainClass: Property<String>}
+```
+
+```kotlin
+// GenerateStartScript.kt
+package myproject.tasks
+
+import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputFile
+import org.gradle.api.tasks.TaskAction
+import java.lang.UnsupportedOperationException
+import java.nio.file.Files
+import java.nio.file.attribute.PosixFilePermission.GROUP_READ
+import java.nio.file.attribute.PosixFilePermission.GROUP_WRITE
+import java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE
+import java.nio.file.attribute.PosixFilePermission.OWNER_READ
+import java.nio.file.attribute.PosixFilePermission.OWNER_WRITE
+
+// Класс абстрактный, потому что gradle его унаследует и создаст реальный
+abstract class GenerateStartScript : DefaultTask() {
+    //    @get:InputFile
+    //    @get:InputFiles
+    @get:Input
+    abstract val mainClass: Property<String>
+
+    @get:OutputFile
+    abstract val scriptFile: RegularFileProperty
+
+    @TaskAction
+    fun generate() {
+        val main = mainClass.get()
+        val out = scriptFile.get().asFile // java.io.File
+        val script = "java -cp libs/* $main\n"
+        out.writeText(script)
+        try {
+            Files.setPosixFilePermissions(
+                out.toPath(), setOf(
+                    OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_WRITE
+                )
+            )
+        } catch (ignored: UnsupportedOperationException) {}
+    }
+}
+```
+```kotlin
+// my-java-application.gradle.kts
+val packageAppExtension = extensions.create<PackageAppExtension>("packageApp")
+
+val generateStartScript = tasks.register<GenerateStartScript>("generateStartScript") {
+    // Конфигурация задачи через расширение
+    mainClass.convention(packageAppExtension.mainClass)
+    // Конфигурация задачи напрямую (без использования расширения)
+    scriptFile.set(layout.buildDirectory.file("run.sh"))
+}
+
+val packageAppTask = tasks.register<Zip>("packageApp") {
+    from(generateStartScript)
+}
+```
+```gradle
+// build.gradle.kts
+// Конфигурация задачи generateStartScript через расширение
+packageApp {
+    mainClass.set("MyApplication1")
+}
+
+// Конфигурация задачи напрямую (без использования расширения)
+tasks.generateStartScript {
+    mainClass.set("MyApplication")
 }
 ```
 

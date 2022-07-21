@@ -9,6 +9,16 @@ application {
     mainClass.set("MyApplication")
 }
 
+// Конфигурация задачи generateStartScript через расширение
+packageApp {
+    mainClass.set("MyApplication1")
+}
+
+// Конфигурация задачи напрямую (без использования расширения)
+tasks.generateStartScript {
+    mainClass.set("MyApplication")
+}
+
 dependencies {
     implementation(project(":business-logic"))
 }
