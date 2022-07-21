@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":business-logic"))
 }
 
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
-}
+// перенесено в convention plugin:
+//java {
+//    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+//}

@@ -43,3 +43,10 @@ tasks.test {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
 }
+
+checkstyle {
+    // the only version compatible with gradle 7.5. In addition, checkstyle config must be downloaded
+    // from https://github.com/checkstyle/checkstyle/blob/master/src/main/resources/google_checks.xml
+    // and put into [root]/config/checkstyle/checkstyle.xml
+    toolVersion = "10.3.1"
+}

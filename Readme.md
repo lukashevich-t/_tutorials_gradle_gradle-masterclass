@@ -86,6 +86,43 @@ tasks.register("qualityCheckAll") {
 }
 ```
 
+У задач есть входы (inputs) и выходы (outputs). Входы:
+- файлы
+- коллекции файлов
+- папки
+- Configuration data (?)
+
+Выходы: набор файлов и/или папок.
+
+Если выход одной задачи служит входом для другой, то автоматически устанавливается зависимость между задачами. Также, входы и выходы участвуют в инкрементной сборке, т.е. если со времени последнего выполнения входы и выходы не изменились и не были удалены, то задача не будет выполняться.
+
+Примеры указания входов:
+```gradle
+// Groovy:
+jar {
+  from {
+    def jarContent = project.configurations.runtimeClasspath.collect { File file ->  project.zipTree(file) }
+    jarContent += '/home/tim/.zshrc1'
+    return jarContent
+  }
+}
+task deployToTomcat(type: Copy) {
+  from war.archivePath
+  from war
+}
+
+// Kotlin:
+tasks.register<Zip>("packageApp") {
+    from(layout.projectDirectory.file("run.sh"))
+    from(tasks.jar) {
+        into("libs")
+    }
+    from(configurations.runtimeClasspath) {
+        into("libs")
+    }
+}
+```
+
 ## Java plugin https://docs.gradle.org/current/userguide/java_plugin.html
 Папки
 - 032 (console application)
