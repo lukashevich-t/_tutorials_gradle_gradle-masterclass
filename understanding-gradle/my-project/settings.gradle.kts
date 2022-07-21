@@ -4,7 +4,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
     }
-    includeBuild("my-build-logic")
+    includeBuild("../my-build-logic")
 }
 
 // Репозитории для всех подпроектов (для общих зависимостей):
@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 //  includeBuild("../my-other-project")
 }
 
-rootProject.name = "understanding-gradle"
+rootProject.name = "my-project"
 
 // settings plugins (для совместной конфигурации разных билдов)
 // plugins {

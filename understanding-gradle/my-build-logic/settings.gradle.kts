@@ -9,6 +9,8 @@ dependencyResolutionManagement {
     }
 }
 
+rootProject.name = "my-build-logic"
+
 //pluginManagement {
 //    repositories {
 //        // для доступа к community plugins:
