@@ -1,17 +1,17 @@
 // Репозитории для плагинов самого gradle:
 pluginManagement {
-  repositories {
-    gradlePluginPortal()
-    google()
-  }
-//  includeBuild("../my-build-logic")
+    repositories {
+        gradlePluginPortal()
+        google()
+    }
+    includeBuild("my-build-logic")
 }
 
 // Репозитории для всех подпроектов (для общих зависимостей):
 dependencyResolutionManagement {
-  repositories {
-    mavenCentral()
-  }
+    repositories {
+        mavenCentral()
+    }
 //  includeBuild("../my-other-project")
 }
 
@@ -22,10 +22,14 @@ rootProject.name = "understanding-gradle"
 //   id("...")
 // }
 
-//include("app")
-//include("business-logic")
-//include("data-model")
+include("app", "business-logic", "data-model")
 
-rootDir.listFiles().filter { it.isDirectory && !it.isHidden && !it.name.startsWith(".") && it.name != "gradle" }.forEach {
-  include(it.name)
-}
+//rootDir.listFiles().filter {
+//    it.isDirectory
+//            && !it.isHidden
+//            && !it.name.startsWith(".")
+//            && it.name != "gradle"
+//            && it.name != "my-build-logic"
+//}.forEach {
+//    include(it.name)
+//}

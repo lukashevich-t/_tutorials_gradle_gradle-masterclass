@@ -1,18 +1,23 @@
 plugins {
     // core plugin (входит в состав gradle)
-    id("java-library")
+//     id("java-library")
     // community plugin
-    id("org.jetbrains.kotlin.jvm") version "1.5.21"
-    // convention plugin (исходники лежат в локально). Служат для шаринга конфигураций сборки
-//    id("my-java-library")
+//     id("org.jetbrains.kotlin.jvm") version "1.5.21"
+    /**
+     * convention plugins. Ихисходники лежат в локально в buildSrc или в произвольной папке, путь к которой указывается в settings.gradle[.kts]:.
+     * pluginManagement { includeBuild("../my-build-logic") }.
+     * Служат для шаринга конфигураций сборки или какой-то логики сборки между подпроектами.
+     */
+    id("my-java-library")
 }
 
-// Плагины предоставляют "расширения" (extensions). Доступ к расширению плагина java-library:
-java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
-}
+// Плагины предоставляют "расширения" (extensions). Доступ к расширению плагина java-library (уже перенесено в convention plugin):
+//java {
+//    toolchain.languageVersion.set(JavaLanguageVersion.of(11))
+//}
 
 dependencies {
 //    implementation(project(":data-model"))
-    implementation("org.apache.commons:commons-lang3:3.9")
+    // Перенесено в convention plugin:
+//    implementation("org.apache.commons:commons-lang3:3.12.0")
 }
