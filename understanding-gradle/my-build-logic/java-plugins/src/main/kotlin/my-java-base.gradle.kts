@@ -6,6 +6,8 @@ plugins {
     id("checkstyle")
 }
 
+group = "org.example.my-app"
+
 // Ограничить вывод команды tasks определённой группой
 val myBuildGroup = "my project build"
 tasks.named<TaskReportTask>("tasks") {

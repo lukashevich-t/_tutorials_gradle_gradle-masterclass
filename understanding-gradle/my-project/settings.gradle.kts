@@ -13,6 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 //  includeBuild("../my-other-project")
+    includeBuild(".")
 }
 
 rootProject.name = "my-project"
