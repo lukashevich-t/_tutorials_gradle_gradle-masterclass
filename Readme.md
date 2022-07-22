@@ -252,7 +252,9 @@ dependencyResolutionManagement {
 - api - зависимость доступна при компиляции и выполнении, плюс видна потребителям нашей библиотеки. Т.е. другие компоненты, зависящие от нашей библиотеки, будут видеть эту зависимость на этапе компиляции, т.к. это часть публичного API нашей библиотеки.
 - compileOnly - зависимость доступна при компиляции, но не при выполнении. Обычно используется для подключения аннотаций, не нужных при выполнении. Например, `jetbrains:annotations` или `com.google.errorprone:error_prone_annotations`, которые используются IDE или утилитами для дополнительного контроля кода. Еще одно применение - если зависимость предоставляется, например, контейнером приложений.
 - compileOnlyApi - то же, что *compileOnly*, но распространяется потребителям библиотеки
-- runtimeOnly - зависимость видна при выполнении, но не при компиляции
+- runtimeOnly - зависимость видна при выполнении, но не при компиляции. Это применяется, когда в неком фреймворке API отделено от реализации (например slf4j). API указывается в конфигурации *implementation*.
+
+![](https://docs.gradle.org/current/userguide/img/java-library-ignore-deprecated-main.png) показаны зависимости между конфигурациями. То, что зеленое, доступно для использования в блоке dependencies. Стрелки показывают, какие зависимости будут использованы на этапе компиляции (compileClasspath), а какие при выполнении (runtimeClasspath). runtimeClasspath используется при создании zip-файла для распространения. Розовое будет re-exported (made visible transitively).
 
 ## Multi-project builds
 Папки
@@ -451,6 +453,9 @@ rootDir.listFiles().filter {it.isDirectory && !it.isHidden }.forEach {
   include(it.name)
 }
 ```
+
+### Показать зависимости
+`gradlew :business-logic:dependencies --configuration=compileClasspat`
 
 ## опции командной строки
 ### Включить build cache

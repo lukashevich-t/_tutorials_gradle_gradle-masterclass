@@ -20,7 +20,8 @@ tasks.generateStartScript {
 }
 
 dependencies {
-    implementation(project(":business-logic"))
+    implementation("org.example.my-app:business-logic") // или так: implementation(project(":business-logic"))
+    runtimeOnly("org.slf4j:slf4j-simple")
 }
 
 // перенесено в convention plugin:
