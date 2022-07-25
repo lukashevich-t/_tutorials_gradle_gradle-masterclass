@@ -17,6 +17,7 @@ TOC
   - [FindBugs](#findbugs)
   - [SpotBugs](#spotbugs)
   - [PMD](#pmd)
+  - [dependency-management-plugin](#dependency-management-plugin)
 - [Kotlin DSL](#kotlin-dsl)
 - [snippets](#snippets)
   - [создать wrapper 1:](#создать-wrapper-1)
@@ -33,6 +34,7 @@ TOC
 ## Что это
 - мой прогресс прослушивания курса [The Gradle Masterclass](https://www.udemy.com/course/gradle-masterclass/). 
 - [туториал](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE) ([github](https://github.com/jjohannes/understanding-gradle)) (папка *understanding-gradle*)
+- Игрища с плагином io.spring.dependency-management (папка explore-bom)
 - возможно, прочие заметки
 
 ## API
@@ -478,6 +480,30 @@ tasks.withType(Pmd){
 //}
 ```
 Задачи: `check`, `pmdTest`, `pmdMain`
+
+### dependency-management-plugin
+Для подключения зависимостей в форме maven BOM к проектам gradle.
+```gradle
+// build.gradle
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE"
+  }
+}
+// использование
+dependencyManagement {
+  imports {
+    mavenBom 'io.spring.platform:platform-bom:1.1.1.RELEASE'
+  }
+}
+```
+Дополнительная информация: [1](https://spring.io/blog/2015/02/23/better-dependency-management-for-gradle) [2](https://plugins.gradle.org/plugin/io.spring.dependency-management) [3](https://github.com/spring-gradle-plugins/dependency-management-plugin)
+
+Поведение у него интересное. По умолчанию (без плагина), если в приложении и используемой библиотеке указаны разные версии одной зависимости, то будет взята максимальная версия.
+Просто подключение данного плагина (одной строчкой `id("io.spring.dependency-management") version "1.0.12.RELEASE"` в секции *plugins*) меняет поведение - теперь приоритет у версии из приложения, даже если она меньше. А если использовать mavenBom, то будут взяты версии из указанного BOM. Хотя не для всех версий это работает, почему-то...
 
 ## Kotlin DSL
 
