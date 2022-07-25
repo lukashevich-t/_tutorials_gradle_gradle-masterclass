@@ -1,3 +1,35 @@
+TOC
+- [Что это](#что-это)
+- [API](#api)
+- [Свойства](#свойства)
+  - [Script interface](#script-interface)
+  - [Gradle interface](#gradle-interface)
+  - [Project interface](#project-interface)
+- [Tasks](#tasks)
+- [Java plugin https://docs.gradle.org/current/userguide/java_plugin.html](#java-plugin-httpsdocsgradleorgcurrentuserguidejava_pluginhtml)
+- [war plugin https://docs.gradle.org/current/userguide/java_plugin.html](#war-plugin-httpsdocsgradleorgcurrentuserguidejava_pluginhtml)
+- [dependencies](#dependencies)
+- [dependency versions](#dependency-versions)
+- [Multi-project builds](#multi-project-builds)
+- [Multi-project web app](#multi-project-web-app)
+- [Полезные плагины](#полезные-плагины)
+  - [project-report](#project-report)
+  - [FindBugs](#findbugs)
+  - [SpotBugs](#spotbugs)
+  - [PMD](#pmd)
+- [Kotlin DSL](#kotlin-dsl)
+- [snippets](#snippets)
+  - [создать wrapper 1:](#создать-wrapper-1)
+  - [создать wrapper 2:](#создать-wrapper-2)
+  - [получить помощь:](#получить-помощь)
+  - [Подключить все вложенные папки как подпроекты:](#подключить-все-вложенные-папки-как-подпроекты)
+  - [Показать зависимости](#показать-зависимости)
+- [опции командной строки](#опции-командной-строки)
+  - [Включить build cache](#включить-build-cache)
+  - [изменить вывод результатов](#изменить-вывод-результатов)
+
+---
+
 ## Что это
 - мой прогресс прослушивания курса [The Gradle Masterclass](https://www.udemy.com/course/gradle-masterclass/). 
 - [туториал](https://www.youtube.com/playlist?list=PLWQK2ZdV4Yl2k2OmC_gsjDpdIBTN0qqkE) ([github](https://github.com/jjohannes/understanding-gradle)) (папка *understanding-gradle*)
@@ -238,6 +270,20 @@ dependencies {
 ```
 *implementation*, *api* - это конфигурации. Это общее, достаточно сложное понятие, пришло из Ivy. Можно представить их как "корзины", в которые кладутся зависимости и которые имеют определенные свойства и область в месте их применения. Конфигурации добавляются многими плагинами; так, *api* появляется при применении плагина "java-libary".
 
+Можно задать _минимальные_ версии зависимостей в одном месте.:
+```gradle
+// my-convention-plugin.kts
+dependencies.constraints {
+    implementation("org.slf4j:slf4j-api:1.7.32")
+    implementation("org.slf4j:slf4j-simple:1.7.32")
+}
+```
+а в сборочном файле использовать зависимости уже без версий:
+```gradle
+// build.gradle.kts
+dependencies {  implementation("org.slf4j:slf4j-api") }
+```
+
 Зависимости могут находиться извне (во внешнем репозитории); в том же билде; в другом билде (*includeBuild* в settings.gradle). Желательно прописать включение самого нашего билда в поиск зависимостей (для обратной совместимости):
 ```gradle
 // settings.gradle.kts
@@ -254,7 +300,32 @@ dependencyResolutionManagement {
 - compileOnlyApi - то же, что *compileOnly*, но распространяется потребителям библиотеки
 - runtimeOnly - зависимость видна при выполнении, но не при компиляции. Это применяется, когда в неком фреймворке API отделено от реализации (например slf4j). API указывается в конфигурации *implementation*.
 
-![](https://docs.gradle.org/current/userguide/img/java-library-ignore-deprecated-main.png) показаны зависимости между конфигурациями. То, что зеленое, доступно для использования в блоке dependencies. Стрелки показывают, какие зависимости будут использованы на этапе компиляции (compileClasspath), а какие при выполнении (runtimeClasspath). runtimeClasspath используется при создании zip-файла для распространения. Розовое будет re-exported (made visible transitively).
+![](https://docs.gradle.org/current/userguide/img/java-library-ignore-deprecated-main.png) показаны конфигурации и зависимости между ними. 
+- Зеленые конфигурации доступны для использования в блоке dependencies.
+- Синие - resolvable configurations
+- розовые - consumable configurations (влияют на проекты, зависящие от нашего)
+ Стрелки показывают, какие зависимости будут использованы на этапе компиляции (compileClasspath), а какие при выполнении (runtimeClasspath). runtimeClasspath используется при создании zip-файла для распространения. Розовое будет re-exported (made visible transitively).
+
+## dependency versions
+3 способа задать версии:
+
+1\. platforms (коллекция dependency constraints):
+```gradle
+// settings.gradle.kts
+dependencyResolutionManagement { includeBuild("../my-platform") }
+```
+```gradle
+// my-platform\shared-platform\build.gradle.kts
+plugins { id("java-platform") }
+dependencies { api(platform("com.fasterxml.jackson:jackson-bom:2.12.4")) }
+
+// Constrains for Gradle plugins
+dependencies.constraints { api("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21") }
+```
+```gradle
+// [convention-plugin]/build.gradle.kts
+dependencies { implementation(platform("org.example.my-app:shared-platform")) }
+```
 
 ## Multi-project builds
 Папки
@@ -455,7 +526,7 @@ rootDir.listFiles().filter {it.isDirectory && !it.isHidden }.forEach {
 ```
 
 ### Показать зависимости
-`gradlew :business-logic:dependencies --configuration=compileClasspat`
+`gradlew :business-logic:dependencies --configuration=compileClasspath`
 
 ## опции командной строки
 ### Включить build cache

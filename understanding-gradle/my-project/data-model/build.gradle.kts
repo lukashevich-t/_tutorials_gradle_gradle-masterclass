@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api("org.apache.commons:commons-lang3:3.9")
+    api("org.apache.commons:commons-lang3")
 }
 
 // перенесено в convention plugin:

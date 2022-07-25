@@ -14,6 +14,7 @@ dependencyResolutionManagement {
     }
 //  includeBuild("../my-other-project")
     includeBuild(".")
+    includeBuild("../my-platform")
 }
 
 rootProject.name = "my-project"
